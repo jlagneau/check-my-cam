@@ -1,0 +1,44 @@
+<?php
+
+require_once 'autoload.php';
+require_once 'pdo.php';
+
+use Camagru\Entity\User;
+use Camagru\Factory\UserManager;
+
+if (php_sapi_name() !== 'cli') {
+    echo '<html><body><pre>';
+}
+echo "############################\n";
+echo "#                          #\n";
+echo "#        S E T U P         #\n";
+echo "#                          #\n";
+echo "############################\n\n";
+
+echo 'Install schemas ........';
+/*
+ * Get schema
+ */
+$schema = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'schema.sql');
+$pdo->exec($schema);
+
+echo "[OK]\n";
+
+/*
+ * Get fixtures
+ */
+
+echo 'Install fixtures .......';
+
+// test user
+$userManager = new UserManager($pdo);
+$user = $userManager->create('test', 'jlagneau@student.42.fr', 'test');
+
+$user->setActive(1);
+
+$userManager->add($user);
+
+echo "[OK]\n";
+
+// test pictures
+

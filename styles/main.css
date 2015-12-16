@@ -1,0 +1,243 @@
+/*
+** MAIN LAYOUT
+*/
+body {
+  padding: 0;
+  margin: 0;
+  color: #555;
+  background-color: #efefef;
+}
+header {
+  margin-bottom: 20px;
+  background-color: #2a2730;
+}
+header h1 {
+  margin-left: 10px;
+  display: inline-block;
+  color: #99979c;
+}
+header ul {
+  list-style-type: none;
+}
+header h1, header ul, header li {
+  display: inline-block;
+}
+header a {
+  margin-right: 10px;
+  padding-bottom: 5px;
+  color: white;
+  text-decoration: none;
+}
+header .active {
+  border-bottom: 3px solid gray;
+}
+#flash {
+  padding: 0 15px 0 15px;
+}
+#flash p {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+}
+#flash .warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+#flash .success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+#flash .error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+#wrapper {
+  margin: auto;
+  padding: 20px;
+  width: 300px;
+  background-color:white;
+}
+#pagination li {
+  display: inline-block;
+}
+#pagination a {
+  text-decoration: none;
+}
+.page {
+  padding: 5px;
+  color: #999;
+}
+a .page {
+  color: #3689b8;
+  border: 1px solid #555;
+  border-radius: 4px;
+}
+footer {
+  clear:both;
+  padding: 10px;
+}
+label {
+  display: inline-block;
+  width: 120px;
+}
+input[type="text"], input[type="password"] {
+  height: 18px;
+  border: 1px solid #555;
+  border-radius: 3px;
+}
+main ul, aside ul {
+  padding: 0;
+  list-style-type: none;
+}
+/*
+** GALLERY PAGE
+*/
+#gallery #gallery-pictures {
+  width: 100%;
+}
+#gallery li {
+  display: inline-block;
+}
+#gallery-pictures li {
+  width: 24%;
+}
+#gallery-pictures a {
+  border: none;
+}
+#gallery img {
+  width: 100%;
+  height: auto;
+}
+/*
+** SHOW PAGE
+*/
+#show-picture img {
+  width: 100%;
+  height: auto;
+}
+#comment-form textarea {
+  width: 300px;
+  height: 150px;
+  max-width: 300px;
+  max-height: 300px;
+}
+/*
+** ACCOUNT PAGE
+*/
+#account-pictures li {
+  border-bottom: 1px solid #555;
+}
+#account-pictures img {
+  width: auto;
+  height: 75px;
+}
+#account-pictures button {
+  vertical-align: center;
+}
+/*
+** NEW PICTURE PAGE
+*/
+#new-picture {
+  width: 100%;
+  float:left;
+}
+#new-picture div {
+  position: relative;
+  top: 0;
+  left: 0;
+  border: 1px solid gray;
+}
+#new-picture #frame {
+  width: 100%;
+  height: auto;
+}
+#new-picture div, #new-picture canvas, #new-picture video {
+  width: 100%;
+  height: 100%;
+}
+#new-picture #overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+#new-picture #pic {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+#new-picture video {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+#new-picture ul > li {
+  display: inline-block;
+}
+#sidebar {
+  padding-top: 10px;
+  clear:both;
+  float: none;
+}
+#sidebar li {
+  width: 20%;
+  display: inline-block;
+}
+#sidebar img {
+  width: 100%;
+  height: auto;
+}
+#overlayList li {
+  width: 20%;
+  display: inline-block;
+}
+#overlayList img {
+  width: 100%;
+}
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 3s, opacity 3s ease-in;
+}
+
+@media screen and (min-width: 550px) {
+  #wrapper {
+    width: 500px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  #wrapper {
+    width: 900px;
+    min-height: 680px;
+  }
+  #new-picture {
+    width: 640px;
+  }
+  #new-picture #frame {
+    width: 100%;
+    height: 480px;
+  }
+  #new-picture div, #new-picture canvas {
+    width: 100%;
+    height: auto;
+  }
+  #sidebar {
+    width: 150px;
+    float: right;
+    clear: none;
+  }
+  #sidebar li {
+    display: block;
+    width: 100%;
+  }
+}
