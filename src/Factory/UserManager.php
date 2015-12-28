@@ -9,7 +9,6 @@ class UserManager
 {
     protected $db;
 
-    protected static $salt = 1;
 
     public function __construct(\PDO $pdo)
     {
@@ -23,7 +22,7 @@ class UserManager
         $user->setUsername($username)
              ->setEmail($email)
              ->setPlainPassword($plainPassword)
-             ->setHash($this->salt++.$username.$email.$plainPassword)
+             ->setHash($username.$email.$plainPassword)
              ->setActive(0);
 
         return $user;
@@ -99,7 +98,6 @@ class UserManager
                 active = :active
             WHERE id = :id
         ');
-        $user->setHash($this->salt++.$user->getHash());
         $req->execute([
             'id' => $user->getId(),
             'username' => $user->getUsername(),
