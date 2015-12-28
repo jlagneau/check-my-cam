@@ -6,7 +6,7 @@ spl_autoload_register(function ($class) {
     $prefix = 'Camagru\\';
 
     // base directory for the namespace prefix
-    $base_dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
+    $base_dir = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
 
     // does the class use the namespace prefix?
     $len = strlen($prefix);

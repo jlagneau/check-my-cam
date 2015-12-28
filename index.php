@@ -2,7 +2,7 @@
 
 session_start();
 
-define('ROOT', dirname(__FILE__).DIRECTORY_SEPARATOR);
+define('ROOT', __DIR__.DIRECTORY_SEPARATOR);
 define('CONFIG', ROOT.'config'.DIRECTORY_SEPARATOR);
 define('SRC', ROOT.'src'.DIRECTORY_SEPARATOR);
 define('VIEWS', SRC.'views'.DIRECTORY_SEPARATOR);

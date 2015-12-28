@@ -19,7 +19,7 @@ echo 'Install schemas ........';
 /*
  * Get schema
  */
-$schema = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'schema.sql');
+$schema = file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'schema.sql');
 $pdo->exec($schema);
 
 echo "[OK]\n";
