@@ -84,9 +84,16 @@ class User extends AbstractEntity implements UserInterface
         return $this;
     }
 
-    public function setHash($hash)
+    public function setPlainHash($hash)
     {
         $this->hash = hash('sha512', $hash);
+
+        return $this;
+    }
+
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
 
         return $this;
     }

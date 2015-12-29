@@ -9,7 +9,6 @@ class UserManager
 {
     protected $db;
 
-
     public function __construct(\PDO $pdo)
     {
         $this->db = $pdo;
@@ -18,11 +17,10 @@ class UserManager
     public function create($username, $email, $plainPassword)
     {
         $user = new User();
-
         $user->setUsername($username)
              ->setEmail($email)
              ->setPlainPassword($plainPassword)
-             ->setHash($username.$email.$plainPassword)
+             ->setPlainHash($username.$email.$plainPassword)
              ->setActive(0);
 
         return $user;
