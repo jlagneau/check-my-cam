@@ -6,8 +6,11 @@ body {
   margin: 0;
   color: #555;
   background-color: #efefef;
+  font-family: 'Roboto', sans-serif;
 }
 header {
+  height: 80px;
+  width: 100%;
   margin-bottom: 20px;
   background-color: #2a2730;
 }
@@ -16,11 +19,13 @@ header h1 {
   display: inline-block;
   color: #99979c;
 }
+header h1 {
+  display: inline-block;
+}
 header ul {
   list-style-type: none;
-}
-header h1, header ul, header li {
-  display: inline-block;
+  padding: 0;
+  margin: 30px 20px 0 0;
 }
 header a {
   margin-right: 10px;
@@ -30,6 +35,12 @@ header a {
 }
 header .active {
   border-bottom: 3px solid gray;
+}
+header .left {
+  float: left;
+}
+header .right {
+  float: right;
 }
 #flash {
   padding: 0 15px 0 15px;
