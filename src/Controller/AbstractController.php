@@ -31,6 +31,7 @@ abstract class AbstractController
         $content = ob_get_clean();
         require VIEWS.'layout.php';
         $_SESSION['flash'] = null;
+        exit();
     }
 
     protected function redirect($uri)

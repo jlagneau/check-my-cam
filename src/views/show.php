@@ -1,5 +1,13 @@
 <main id="show-picture">
     <img src="<?php echo $picture->getPath() ?>" alt="" />
+    <p><?php echo $likes ?> Likes</p>
+    <a href="/like?id=<?php echo $picture->getId() ?>">
+    <?php if ($hasLiked) : ?>
+        You already liked this picture!
+    <?php else : ?>
+        Do you like it?
+    <?php endif ?>
+     </a>
     <?php if ($connected) : ?>
     <h2>Post a comment: </h2>
     <form id="comment-form" action="/comment?id=<?php echo $picture->getId() ?>" method="POST">
@@ -9,10 +17,13 @@
     <?php endif ?>
     <h2>Comments: </h2>
     <ul id="comments-section">
+        <?php if (empty($comments)) echo "There's no comments" ?>
         <?php foreach ($comments as $comment) : ?>
         <li>
-            <strong><?php echo $comment->getUsername() ?> says :</strong>
-            <p><?php echo $comment->getContent() ?></p>
+            <p>
+                <strong><?php echo $comment->getUsername() ?> says :</strong>
+                <?php echo $comment->getContent() ?>
+            </p>
         </li>
         <?php endforeach ?>
     </ul>
@@ -24,7 +35,7 @@
             <?php if ($page == $i) : ?>
             <span class="page"><?php echo $i++ ?></span>
             <?php else : ?>
-            <a href="/?page=<?php echo $i ?>">
+            <a href="/show?id=<?php echo $picture->getId() ?>&page=<?php echo $i ?>">
                 <span class="page"><?php echo $i++ ?></span>
             </a>
             <?php endif ?>

@@ -5,8 +5,8 @@
     <ul id="account-pictures">
         <?php foreach ($pictures as $picture) : ?>
         <li>
-            <a href=""><img src="<?php echo $picture->getPath() ?>" width="225" /></a>
-            <button>Delete</button>
+            <a href="/show?id=<?php echo $picture->getId() ?>"><img src="<?php echo $picture->getPath() ?>" width="225" /></a>
+            <a href="/account/delete?id=<?php echo $picture->getId() ?>">Delete</a>
         </li>
         <?php endforeach ?>
     </ul>

@@ -117,6 +117,11 @@ class UserManager
         return false;
     }
 
+    public function getCurrentUser()
+    {
+        return $this->getByUsername($_SESSION['login']);
+    }
+
     private function fromColumn(array $array)
     {
         $array = array_filter($array);

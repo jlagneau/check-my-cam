@@ -4,6 +4,7 @@ namespace Camagru\Entity;
 
 use Camagru\Model\AbstractEntity;
 use Camagru\Model\PictureInterface;
+use Camagru\Model\CommentInterface;
 
 class Picture extends AbstractEntity implements PictureInterface
 {
@@ -14,6 +15,8 @@ class Picture extends AbstractEntity implements PictureInterface
     protected $path;
 
     protected $realPath;
+
+    protected $likes;
 
     public function getId()
     {
@@ -33,6 +36,11 @@ class Picture extends AbstractEntity implements PictureInterface
     public function getRealPath()
     {
         return $this->realPath;
+    }
+
+    public function getLikes()
+    {
+        return $this->likes;
     }
 
     public function setId($id)
@@ -59,6 +67,13 @@ class Picture extends AbstractEntity implements PictureInterface
     public function setRealPath($realPath)
     {
         $this->realPath = $realPath;
+
+        return $this;
+    }
+
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
 
         return $this;
     }

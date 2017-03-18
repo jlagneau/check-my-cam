@@ -22,8 +22,8 @@ class CamagruController extends AbstractController
     {
         $this->mailer = new Mailer();
         $this->userManager = new UserManager($pdo);
-        $this->pictureManager = new PictureManager($pdo);
         $this->commentManager = new CommentManager($pdo);
+        $this->pictureManager = new PictureManager($pdo, $this->commentManager);
     }
 
     public function homeAction()
@@ -37,6 +37,10 @@ class CamagruController extends AbstractController
             $_GET['page'] > 0) {
             $page = $_GET['page'];
             $offset = ($page - 1) * $limit;
+        }
+        else if (isset($_GET['page']) &&
+            !ctype_digit($_GET['page'])){
+            $this->notFoundAction();
         }
         $count = $this->pictureManager->count();
         $nb_pages = floor($count / $limit);
@@ -53,21 +57,35 @@ class CamagruController extends AbstractController
     public function showAction()
     {
         $limit = $this->commentManager::LIMIT;
-        $offset = 0;
         $page = 1;
 
         if (!isset($_GET['id']) ||
             !ctype_digit(strval($_GET['id'])) ||
             !$picture = $this->pictureManager->getById($_GET['id'])) {
-            $this->redirect('/');
+            $this->notFoundAction();
         }
+        if (isset($_GET['page']) &&
+            ctype_digit(strval($_GET['page'])) &&
+            $_GET['page'] > 0) {
+            $page = $_GET['page'];
+        }
+        $picture = $this->pictureManager->getById($_GET['id']);
         $count = $this->commentManager->count($picture);
         $nb_pages = floor($count / $limit);
         $nb_pages += ($count % $limit) ? 1 : 0;
+        $page = $page > $nb_pages ? $nb_pages : $page;
+        $offset = $limit * ($page - 1);
         $comments = $this->commentManager->get($picture, $limit, $offset);
         $connected = $this->userManager->isConnected();
+        $likes = $picture->getLikes() === null ? 0 : $picture->getLikes();
+        if ($connected) {
+            $user = $this->userManager->getCurrentUser();
+            $hasLiked = $connected ? $this->pictureManager->userHasLiked($user, $picture) : false;
+        }
         $this->render('show', [
             'picture' => $picture,
+            'likes' => $likes,
+            'hasLiked' => $hasLiked,
             'connected' => $connected,
             'comments' => $comments,
             'nb_pages' => $nb_pages,
@@ -84,7 +102,7 @@ class CamagruController extends AbstractController
         if (!isset($_GET['id']) ||
             !ctype_digit(strval($_GET['id'])) ||
             !$picture = $this->pictureManager->getById($_GET['id'])) {
-            $this->redirect('/');
+            $this->notFoundAction();
         }
         if (isset($_POST) && isset($_POST['content'])) {
             $user = $this->userManager->getByUsername($_SESSION['login']);
@@ -93,6 +111,24 @@ class CamagruController extends AbstractController
             $pictureUser = $this->userManager->getById($picture->getUserId());
             $this->mailer->newComment($pictureUser, $picture);
         }
+        $this->addFlashMessage('success', 'Your comment was correctly posted');
+        $this->redirect('/show?id='.$_GET['id']);
+    }
+
+    public function likeAction()
+    {
+        if (!$this->userManager->isConnected()) {
+            $this->redirect('/login');
+        }
+        if (!isset($_GET['id']) ||
+            !ctype_digit(strval($_GET['id'])) ||
+            !$picture = $this->pictureManager->getById($_GET['id'])) {
+            $this->notFoundAction();
+        }
+        $user = $this->userManager->getCurrentUser();
+        $picture = $this->pictureManager->getById($_GET['id']);
+        $this->pictureManager->toggleLike($user, $picture);
+        $this->addFlashMessage('success', 'Your like has been updated.');
         $this->redirect('/show?id='.$_GET['id']);
     }
 
@@ -151,6 +187,25 @@ class CamagruController extends AbstractController
             $this->pictureManager->add($pic);
         }
         $this->render('newPicture', []);
+    }
+
+    public function deleteAction()
+    {
+        if (!isset($_GET['id']) ||
+            !ctype_digit(strval($_GET['id'])) ||
+            !$picture = $this->pictureManager->getById($_GET['id'])) {
+            $this->notFoundAction();
+        }
+        $picture = $this->pictureManager->getById($_GET['id']);
+        if (!$this->userManager->isConnected()) {
+            $this->redirect('/login');
+        }
+        $user = $this->userManager->getCurrentUser();
+        if ($picture->getUserId() != $user->getId()) {
+            $this->forbiddenAction();
+        }
+        $this->pictureManager->delete($picture);
+        $this->redirect('/account');
     }
 
     public function loginAction()

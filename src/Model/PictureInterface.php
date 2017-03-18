@@ -2,6 +2,8 @@
 
 namespace Camagru\Model;
 
+use Camagru\Model\CommentInterface;
+
 interface PictureInterface
 {
     public function getId();
@@ -12,9 +14,13 @@ interface PictureInterface
 
     public function getRealPath();
 
+    public function getLikes();
+
     public function setUserId($user_id);
 
     public function setPath($filename);
 
     public function setRealPath($filename);
+
+    public function setLikes($likes);
 }

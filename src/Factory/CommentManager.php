@@ -72,6 +72,17 @@ class CommentManager
         return $this->fromArray($req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    public function deleteAllFromPicture(PictureInterface $picture)
+    {
+        $req = $this->db->prepare('
+            DELETE FROM `camagru_comment`
+            WHERE pictureId = :pictureId
+        ');
+        $req->execute([
+            ':pictureId' => $picture->getId()
+        ]);
+    }
+
     private function fromArray(array $array)
     {
         $pictures = [];

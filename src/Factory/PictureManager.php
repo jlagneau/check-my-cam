@@ -10,11 +10,14 @@ class PictureManager
 {
     private $db;
 
+    private $commentManager;
+
     const LIMIT = 16;
 
-    public function __construct(\PDO $pdo)
+    public function __construct(\PDO $pdo, $commentManager)
     {
         $this->db = $pdo;
+        $this->commentManager = $commentManager;
     }
 
     public function create(UserInterface $user, $picture, $overlay)
@@ -44,7 +47,8 @@ class PictureManager
         $pic = new Picture();
         $pic->setUserId($user->getId())
             ->setPath('/uploads/'.$filename)
-            ->setRealPath(UPLOADS.$filename);
+            ->setRealPath(UPLOADS.$filename)
+            ->setLikes(0);
 
         return $pic;
     }
@@ -52,13 +56,14 @@ class PictureManager
     public function add(PictureInterface $picture)
     {
         $req = $this->db->prepare('
-            INSERT INTO `camagru_picture` (userId, path, realPath)
-            VALUES (:userId, :path, :realPath)
+            INSERT INTO `camagru_picture` (userId, path, realPath, likes)
+            VALUES (:userId, :path, :realPath, :likes)
         ');
         $req->execute([
             'userId' => $picture->getUserId(),
             'path' => $picture->getPath(),
             'realPath' => $picture->getRealPath(),
+            'likes' => $picture->getLikes(),
         ]);
 
         return $this;
@@ -106,11 +111,18 @@ class PictureManager
 
     public function delete(PictureInterface $picture)
     {
+        $this->commentManager->deleteAllFromPicture($picture);
         $req = $this->db->prepare('
-            DELETE FROM `camagru_picture` WHERE id = ?
+            DELETE FROM `camagru_user_like`
+            WHERE pictureId = ?
         ');
         $req->execute([$picture->getId()]);
-        unlink($picture->getRealPath);
+        $req = $this->db->prepare('
+            DELETE FROM `camagru_picture`
+            WHERE id = ?
+        ');
+        $req->execute([$picture->getId()]);
+        unlink($picture->getRealPath());
     }
 
     public function count(UserInterface $user = null)
@@ -130,6 +142,63 @@ class PictureManager
         $req->execute();
 
         return strval($req->fetch()['count']);
+    }
+
+    public function toggleLike(UserInterface $user, PictureInterface $picture)
+    {
+        $add = false;
+        if ($this->userHasLiked($user, $picture)) {
+            $req = $this->db->prepare('
+                DELETE FROM `camagru_user_like`
+                WHERE userId = :userId
+                AND pictureId = :pictureId
+            ');
+            $req->execute([
+                ':userId' => $user->getId(),
+                ':pictureId' => $picture->getId()
+            ]);
+        }
+        else {
+            $add = true;
+            $req = $this->db->prepare('
+                INSERT INTO `camagru_user_like` (userId, pictureId)
+                VALUES (:userId, :pictureId)
+            ');
+            $req->execute([
+                'userId' => $user->getId(),
+                'pictureId' => $picture->getId(),
+            ]);
+        }
+        $req = $this->db->prepare('
+            UPDATE `camagru_picture`
+            SET likes = :likes
+            WHERE id = :id
+        ');
+        $req->execute([
+            ':likes' => $add ? $picture->getLikes() + 1 : $picture->getLikes() - 1,
+            ':id' => $picture->getId()
+        ]);
+
+        return $this;
+    }
+
+    public function userHasLiked(UserInterface $user, PictureInterface $picture)
+    {
+        if (isset($user) && isset($picture)) {
+            $userId = $user->getId();
+            $pictureId = $picture->getId();
+            $req = $this->db->prepare('
+                SELECT COUNT(*) as count FROM `camagru_user_like`
+                WHERE userId = :userId
+                AND pictureId = :pictureId
+            ');
+            $req->bindParam(':userId', $userId, \PDO::PARAM_INT);
+            $req->bindParam(':pictureId', $pictureId, \PDO::PARAM_INT);
+        }
+        $req->execute();
+        $res = strval($req->fetch()['count']);
+
+        return $res > 0 ? true : false;
     }
 
     private function fromArray(array $array)

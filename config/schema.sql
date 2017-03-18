@@ -13,7 +13,15 @@ CREATE TABLE `camagru_picture` (
   `id`        INTEGER PRIMARY KEY AUTOINCREMENT,
   `userId`    INT(11)   NOT NULL,
   `path`      CHAR(50)  NOT NULL UNIQUE,
-  `realPath`  CHAR(255) NOT NULL UNIQUE
+  `realPath`  CHAR(255) NOT NULL UNIQUE,
+  `likes`     INT(11)   NOT NULL
+);
+
+DROP TABLE IF EXISTS `camagru_user_like`;
+CREATE TABLE `camagru_user_like` (
+  `id`        INTEGER PRIMARY KEY AUTOINCREMENT,
+  `userId`    INT(11)   NOT NULL,
+  `pictureId` INT(11)   NOT NULL
 );
 
 DROP TABLE IF EXISTS `camagru_comment`;
