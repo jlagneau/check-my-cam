@@ -19,7 +19,7 @@ header h1 {
   display: inline-block;
   color: #99979c;
 }
-header h1 {
+header h1, header li {
   display: inline-block;
 }
 header ul {
