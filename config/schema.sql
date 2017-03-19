@@ -1,3 +1,15 @@
+--****************************************************************************--
+--                                                                            --
+--                                                        :::      ::::::::   --
+--   schema.sql                                         :+:      :+:    :+:   --
+--                                                    +:+ +:+         +:+     --
+--   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        --
+--                                                +#+#+#+#+#+   +#+           --
+--   Created: 2017/03/19 05:56:13 by jlagneau          #+#    #+#             --
+--   Updated: 2017/03/19 05:56:17 by jlagneau         ###   ########.fr       --
+--                                                                            --
+--****************************************************************************--
+
 DROP TABLE IF EXISTS `camagru_user`;
 CREATE TABLE `camagru_user` (
   `id`        INTEGER PRIMARY KEY AUTOINCREMENT,

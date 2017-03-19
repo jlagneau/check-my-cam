@@ -1,29 +1,24 @@
 <?php
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   CamagruController.php                              :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2017/03/19 05:47:02 by jlagneau          #+#    #+#             //
+//   Updated: 2017/03/19 05:47:41 by jlagneau         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 namespace Camagru\Controller;
 
-use Camagru\Factory\CommentManager;
-use Camagru\Factory\PictureManager;
-use Camagru\Factory\UserManager;
 use Camagru\Utils\Security;
-use Camagru\Utils\Mailer;
 
 class CamagruController extends AbstractController
 {
-    private $mailer;
-
-    private $commentManager;
-
-    private $pictureManager;
-
-    private $userManager;
-
-    public function __construct(\PDO $pdo)
-    {
-        $this->mailer = new Mailer();
-        $this->userManager = new UserManager($pdo);
-        $this->commentManager = new CommentManager($pdo);
-        $this->pictureManager = new PictureManager($pdo, $this->commentManager);
+    function __construct(\PDO $pdo) {
+        parent::__construct($pdo);
     }
 
     public function homeAction()

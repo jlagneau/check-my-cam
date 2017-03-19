@@ -1,4 +1,15 @@
 "use strict";
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   webcam.js                                          :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2017/03/19 05:55:32 by jlagneau          #+#    #+#             //
+//   Updated: 2017/03/19 05:55:38 by jlagneau         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 window.addEventListener("DOMContentLoaded", function() {
   navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);

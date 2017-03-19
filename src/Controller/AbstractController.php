@@ -1,9 +1,41 @@
 <?php
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   AbstractController.php                             :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2017/03/19 05:47:55 by jlagneau          #+#    #+#             //
+//   Updated: 2017/03/19 05:48:10 by jlagneau         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 namespace Camagru\Controller;
 
+use Camagru\Factory\CommentManager;
+use Camagru\Factory\PictureManager;
+use Camagru\Factory\UserManager;
+use Camagru\Utils\Mailer;
+
 abstract class AbstractController
 {
+    protected $mailer;
+
+    protected $commentManager;
+
+    protected $pictureManager;
+
+    protected $userManager;
+
+    protected function __construct(\PDO $pdo)
+    {
+        $this->mailer = new Mailer();
+        $this->userManager = new UserManager($pdo);
+        $this->commentManager = new CommentManager($pdo);
+        $this->pictureManager = new PictureManager($pdo, $this->commentManager);
+    }
+
     public function notFoundAction()
     {
         header('HTTP/1.0 404 Not found');

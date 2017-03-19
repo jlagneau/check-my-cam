@@ -1,4 +1,15 @@
 "use strict";
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   newPicture.js                                      :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: jlagneau <jlagneau@student.42.fr>          +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2017/03/19 05:55:22 by jlagneau          #+#    #+#             //
+//   Updated: 2017/03/19 05:55:27 by jlagneau         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
 
 function createSidebar(response) {
   var picturesList = document.getElementById("sidebar-pictures");
